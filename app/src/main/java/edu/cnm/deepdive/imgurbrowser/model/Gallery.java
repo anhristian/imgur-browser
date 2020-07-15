@@ -85,6 +85,7 @@ public class Gallery {
 
   public static class Search {
 
+    @Expose
     private Gallery[] data;
 
     public Gallery[] getData() {
