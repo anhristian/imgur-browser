@@ -1,18 +1,15 @@
 package edu.cnm.deepdive.imgurbrowser.controller;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.lifecycle.Observer;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import edu.cnm.deepdive.imgurbrowser.R;
-import edu.cnm.deepdive.imgurbrowser.model.Gallery;
-import edu.cnm.deepdive.imgurbrowser.model.Gallery.Search;
 import edu.cnm.deepdive.imgurbrowser.view.GalleryListAdapter;
 import edu.cnm.deepdive.imgurbrowser.viewmodel.ListViewModel;
 
