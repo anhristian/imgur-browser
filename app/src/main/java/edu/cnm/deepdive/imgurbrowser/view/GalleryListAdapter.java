@@ -7,21 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import edu.cnm.deepdive.imgurbrowser.R;
 import edu.cnm.deepdive.imgurbrowser.model.Gallery;
-import edu.cnm.deepdive.imgurbrowser.model.Image;
+import java.util.List;
 
 public class GalleryListAdapter extends RecyclerView.Adapter<GalleryListAdapter.GalleryViewHolder> {
 
   private final Context context;
-  private final Gallery[] galleries;
+  private final List<Gallery> galleries;
 
-  public GalleryListAdapter(Context context, Gallery[] galleries) {
+  public GalleryListAdapter(Context context, List<Gallery> galleries) {
     super();
     this.context = context;
     this.galleries = galleries;
@@ -43,7 +42,7 @@ public class GalleryListAdapter extends RecyclerView.Adapter<GalleryListAdapter.
 
   @Override
   public int getItemCount() {
-    return galleries.length;
+    return galleries.size();
   }
 
   //we created a nested class. Package private it is default , so do not say that.
@@ -53,6 +52,7 @@ public class GalleryListAdapter extends RecyclerView.Adapter<GalleryListAdapter.
     private final TextView title;
     private final TextView description;
     private final Spinner imageSpinner;
+    private Gallery gallery;
 
     public GalleryViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -75,10 +75,11 @@ public class GalleryListAdapter extends RecyclerView.Adapter<GalleryListAdapter.
     }
 
     private void bind(int position) {
-      title.setText(galleries[position].getTitle());
-      description.setText(galleries[position].getDescription());
+      gallery = galleries.get(position); //go to galleries take a particular galary (position 0 e.g. and take a particular image)
+      title.setText(gallery.getTitle());
+      description.setText(gallery.getDescription());
       GalleryImageAdapter galleryImageAdapter = new GalleryImageAdapter(context,
-          galleries[position].getImages());
+          gallery.getImages());
       imageSpinner.setAdapter(galleryImageAdapter);
     }
   }

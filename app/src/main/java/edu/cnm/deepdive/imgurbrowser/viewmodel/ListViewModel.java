@@ -13,25 +13,26 @@ import edu.cnm.deepdive.imgurbrowser.model.Gallery;
 import edu.cnm.deepdive.imgurbrowser.service.ImgurService;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import java.util.List;
 
 public class ListViewModel extends AndroidViewModel implements LifecycleObserver {
 
-  private final MutableLiveData<Gallery.Search> searchResult;
+  private final MutableLiveData<List<Gallery>> galleries;
   private final MutableLiveData<Throwable> throwable;
-  ImgurService imgurService;
+  private final ImgurService imgurService;
   private final CompositeDisposable pending;
 
   public ListViewModel(@NonNull Application application) {
     super(application);
-    searchResult = new MutableLiveData<>();
+    galleries = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     imgurService = ImgurService.getInstance();
     pending = new CompositeDisposable();
     loadData();
   }
 
-  public LiveData<Gallery.Search> getSearchResult() {
-    return searchResult;
+  public LiveData<List<Gallery>> getGalleries() {
+    return galleries;  //after line 42 this is ready to be called out.
   }
 
   public LiveData<Throwable> getThrowable() {
@@ -40,14 +41,23 @@ public class ListViewModel extends AndroidViewModel implements LifecycleObserver
 
   public void loadData() {
     pending.add(
-    imgurService.getSearchResult(BuildConfig.CLIENT_ID, "cars")
-        .subscribeOn(Schedulers.io())
-        .subscribe(
-            (searchResult) -> this.searchResult.postValue(searchResult),
-            (throwable) -> this.throwable.postValue(throwable.getCause())
-        )
-        );
+        imgurService.getSearchResult(BuildConfig.CLIENT_ID,
+            "cars")
+            .subscribeOn(Schedulers.io())
+            .map((result) -> {
+              List<Gallery> galleries = result.getData();
+              galleries.removeIf((gallery) ->           //it is a filter
+                  gallery.getImages() == null ||      //looking to the list of data and
+                      gallery.getImages().isEmpty());
+              return galleries;
+            })
+            .subscribe(
+                value -> ListViewModel.this.galleries.postValue(value),
+                throwable -> this.throwable.postValue(throwable.getCause())
+            )
+    );
   }
+
   @OnLifecycleEvent(Event.ON_STOP)
   private void clearPending() {
     pending.clear();

@@ -6,7 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Image {
 
-  private String id;
+  @Expose
+  @SerializedName("id")
+  private String imageId;
 
   @Expose
   private String title;
@@ -14,21 +16,36 @@ public class Image {
   @Expose
   private String description;
 
-  private long datetime;
+  @Expose
+  @SerializedName("datetime")
+  private long imageDateTime;
+
+  @Expose
   private String type;
-  private int width;
-  private int height;
+
+  @Expose
+  private Integer width;
+
+  @Expose
+  private Integer height;
 
   @SerializedName("link")
   @Expose
   private String url;
 
-  public String getId() {
-    return id;
+  @Expose
+  private Integer views;
+
+  @Expose
+  private Long bandwidth;
+
+
+  public String getImageId() {
+    return imageId;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setImageId(String imageId) {
+    this.imageId = imageId;
   }
 
   public String getTitle() {
@@ -47,12 +64,12 @@ public class Image {
     this.description = description;
   }
 
-  public long getDatetime() {
-    return datetime;
+  public long getImageDateTime() {
+    return imageDateTime;
   }
 
-  public void setDatetime(long datetime) {
-    this.datetime = datetime;
+  public void setImageDateTime(long imageDateTime) {
+    this.imageDateTime = imageDateTime;
   }
 
   public String getType() {
@@ -63,19 +80,19 @@ public class Image {
     this.type = type;
   }
 
-  public int getWidth() {
+  public Integer getWidth() {
     return width;
   }
 
-  public void setWidth(int width) {
+  public void setWidth(Integer width) {
     this.width = width;
   }
 
-  public int getHeight() {
+  public Integer getHeight() {
     return height;
   }
 
-  public void setHeight(int height) {
+  public void setHeight(Integer height) {
     this.height = height;
   }
 
@@ -87,6 +104,21 @@ public class Image {
     this.url = url;
   }
 
+  public Integer getViews() {
+    return views;
+  }
+
+  public void setViews(Integer views) {
+    this.views = views;
+  }
+
+  public Long getBandwidth() {
+    return bandwidth;
+  }
+
+  public void setBandwidth(Long bandwidth) {
+    this.bandwidth = bandwidth;
+  }
 
   @NonNull
   @Override
