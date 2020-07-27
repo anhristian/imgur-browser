@@ -1,27 +1,96 @@
 package edu.cnm.deepdive.imgurbrowser.controller;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import com.squareup.picasso.Picasso;
 import edu.cnm.deepdive.imgurbrowser.R;
+import edu.cnm.deepdive.imgurbrowser.model.Image;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link DialogFragment} subclass.
  */
-public class ImageDetailDialogFragment extends Fragment {
+public class ImageDetailDialogFragment extends DialogFragment {
 
-  public ImageDetailDialogFragment() {
-    // Required empty public constructor
+  private Image image;                     //it makes the image model get the data and display it
+
+  public static ImageDetailDialogFragment newInstance(Image image) {
+
+    ImageDetailDialogFragment fragment = new ImageDetailDialogFragment();
+    Bundle args = new Bundle(); //line 27-28 take the data containing in the System and populated and image model
+    args.putSerializable("image", image);
+    fragment.setArguments(args);
+
+    return fragment;
   }
 
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (getArguments() != null) {
+      image = (Image) getArguments().getSerializable("image");
+    }
+  }
+
+  @NonNull
+  @Override
+  public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    View view = LayoutInflater.from(getContext())
+        .inflate(R.layout.fragment_image_detail_dialog, null, false);
+
+    ImageView imageView = view.findViewById(R.id.image_detail);
+    TextView imageDescription = view.findViewById(R.id.image_description);
+    TextView imageId = view.findViewById(R.id.image_id);
+    TextView imageUrl = view.findViewById(R.id.image_url);
+    TextView imageDateTime = view.findViewById(R.id.image_datetime);
+    TextView imageType = view.findViewById(R.id.image_type);
+    TextView imageWidth = view.findViewById(R.id.image_width);
+    TextView imageHeight = view.findViewById(R.id.image_height);
+    TextView imageViews = view.findViewById(R.id.image_views);
+    TextView imageBandWidth = view.findViewById(R.id.image_bandwidth);
+
+    if (image.getUrl() != null) {
+      Picasso.get().load(image.getUrl()).into(
+          imageView); //got url put in image view and Picasso loaded that widget and transform to image
+    }
+    imageDescription.setText((image.getDescription() != null) ? image.getDescription()
+        : "Description N/A"); //setText takes the data and put in the widget
+    imageId.setText((image.getImageId() != null) ? "Id: " + image.getImageId() : "Image Id N/A");
+    imageUrl.setText((image.getUrl() != null) ? "Image Url: " + image.getUrl() : "Image Url N/A");
+    imageDateTime.setText(
+        (image.getImageDateTime() != null) ? "Submitted: " + image.getImageDateTime()
+            : "Image DateTime N/A");
+    imageType
+        .setText((image.getType() != null) ? "Type of Image" + image.getType() : "Image Type N/A");
+    imageWidth.setText(
+        (image.getWidth() != null) ? "Image Width: " + image.getWidth() : "Image Width N/A");
+    imageHeight.setText(
+        (image.getHeight() != null) ? "Image Height: " + image.getHeight() : "Image Height N/A");
+    imageViews.setText((image.getViews() != null) ? "Views: " + image.getViews() : "Views N/A");
+    imageBandWidth.setText(
+        (image.getBandwidth() != null) ? "Bandwidth: " + image.getBandwidth() : "Bandwidth N/A");
+
+    AlertDialog dialog = new AlertDialog.Builder(getContext())
+        .setTitle((image.getTitle() != null) ? image.getTitle() : "Untitled")
+        .setView(view)
+        .setPositiveButton(R.string.close_image_dialog, (dlg, which) -> {
+
+        })
+        .create();
+    return dialog;
+  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_image_detail_dialog, container, false);
+    return null;
   }
 }
