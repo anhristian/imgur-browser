@@ -65,8 +65,8 @@ public class GalleryListAdapter extends RecyclerView.Adapter<GalleryListAdapter.
 
     public GalleryViewHolder(@NonNull View itemView) {
       super(itemView);
-      title = itemView.findViewById(R.id.title);
-      description = itemView.findViewById(R.id.description);
+      title = itemView.findViewById(R.id.gallery_title);
+      description = itemView.findViewById(R.id.gallery_description);
       imageSpinner = itemView.findViewById(
           R.id.gallery_search_spinner);  //making connection here with the XML file item_gallery_search
 
